@@ -1,0 +1,2 @@
+import { DefaultRefreshHandler } from '/Users/daigoro/Dev/daigoroCode/ImaTrip/ImaTripAdmin/node_modules/@sidebase/nuxt-auth/dist/runtime/utils/refreshHandler'
+export const _refreshHandler = new DefaultRefreshHandler({"enablePeriodically":60000,"enableOnWindowFocus":false})
