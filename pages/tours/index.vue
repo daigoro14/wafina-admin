@@ -19,38 +19,51 @@
       </div>
     </template> -->
     </v-date-picker>
-    <div class="w-full sm:w-auto flex gap-2">
+    <div class="w-full flex flex-col items-center px-2 pt-2 bg-gray-50 rounded-lg">
+      <h1 class="text-3xl mb-2">Existing Tours</h1>
+      <v-text-field          
+          label="Search"
+          v-model="search"
+          variant="outlined"
+          width="50%"
+          max-width="200"
+          density="comfortable"
+          @change="fetchTours"
+        />
+      <div class="w-full sm:w-auto flex gap-2">
+        <v-text-field
+          label="Earliest"
+          v-model="earliestDate"
+          variant="outlined"
+          width="50%"
+          max-width="200"
+          type="date"
+          density="comfortable"
+          @change="fetchTours"
+        />
       <v-text-field
-        label="Earliest"
-        v-model="earliestDate"
+        max-width="200"
+        label="Latest"
+        v-model="latestDate"
         variant="outlined"
         width="50%"
         type="date"
         density="comfortable"
         @change="fetchTours"
       />
-
-    <v-text-field
-      label="Latest"
-      v-model="latestDate"
-      variant="outlined"
-      width="50%"
-      type="date"
-      density="comfortable"
-      @change="fetchTours"
-    />
-
+      </div>
     </div>
     <v-data-table-server
-      v-model:items-per-page="tourData.length"
+      v-model:items-per-page="itemsPerPage"
+      v-model:page="page"
       :headers="headers"
       :items="tourData"
       :loading="loading"
-      :total-items="tourData.length"
-      :server-items-length="tourData.length"
+      :server-items-length="totalItems"
       :server-items="fetchTours"
-      :items-length="tourData.length"
+      :items-length="totalItems"
       @click:row="onRowClick"
+      @update:options="fetchTours"
     >
       <template #item.customers.length="{ item }: { item: { customers: [] } }">
 				<span><span :class="item.customers.length < 3 ? 'text-primary' : ''">{{item.customers.length}}</span>/{{maxTourists}}</span>
@@ -75,6 +88,10 @@ const earliestDate = ref(today);
 const latestDate = ref("");
 const { token } = useAuth()
 const maxTourists = 15;
+const search = ref("");
+const page = ref(1);
+const itemsPerPage = ref(10);
+const totalItems = ref(0);
 
 
 
@@ -83,8 +100,9 @@ const fetchTours = async () => {
     const params = new URLSearchParams();
     if (earliestDate.value) params.append("earliest", earliestDate.value);
     if (latestDate.value) params.append("latest", latestDate.value);
-
-    console.log(token.value)
+    if (search.value) params.append("search", search.value);
+    params.append("page", page.value.toString());
+    params.append("limit", itemsPerPage.value.toString());
 
     const response = await fetch(`${url}/tours?${params.toString()}`, {
       headers: {
@@ -97,7 +115,9 @@ const fetchTours = async () => {
       throw new Error('Network response was not ok');
     }
     const data = await response.json(); 
-    tourData.value = data; 
+    console.log(data)
+    tourData.value = data.tours;
+    totalItems.value = data.total;
   } catch (error) {
     console.error('Error fetching tours:', error);
   } finally {
@@ -106,6 +126,8 @@ const fetchTours = async () => {
 };
 
 fetchTours();
+
+watch(search, fetchTours);
 
 const goBack = () => {
   router.go(-1);
