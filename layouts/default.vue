@@ -53,7 +53,7 @@
       <v-spacer/>
       <!-- <v-toolbar-title v-show="true"> -->
 				<NuxtLink to="/">
-					<span class="text-5xl md:text-7xl p-4">WAFINA🇦🇴</span>
+					<span class="text-4xl md:text-7xl p-4">WAFINA🇦🇴</span>
 				</NuxtLink>
 			<!-- </v-toolbar-title> -->
        <v-spacer/>
@@ -151,11 +151,11 @@ const mainNavItemsPrimary = [
 
 const mainNavItemsSecondary = computed(() => {
   const items: NavItem[] = [
-    {
-      icon: 'mdi-chat',
-      title: 'Feedback',
-      action: 'dialog',
-    },
+    // {
+    //   icon: 'mdi-chat',
+    //   title: 'Feedback',
+    //   action: 'dialog',
+    // },
   ]
 
   // Conditionally add 'Användare' to the secondary navigation if the user is portalAdmin

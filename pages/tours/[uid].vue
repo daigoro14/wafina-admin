@@ -4,8 +4,12 @@
   </v-btn>
   <v-container>
     <v-card elevation="3">
-      <v-card-title>
-        <h2 class="text-2xl">Tour Details - {{ uid }}</h2>
+      <v-card-title class="text-lg !flex gap-1 justify-between">
+        <h2 class="text-2xl">Tour - {{ uid }}</h2>
+        <div v-if="tourData" class="text-gray-600 text-lg">
+          <span :class="tourData.customers.length < 3 ? 'text-primary' : ''">{{tourData.customers.length}}</span>/{{maxTourists}}
+          <v-icon class="ml-2">mdi-account-multiple</v-icon>
+        </div>
       </v-card-title>
       <v-card-text>
         <v-select
@@ -45,6 +49,7 @@
     description: string;
     time: string;
     date: string;
+    customers: [];
   }
 
   const { token } = useAuth()
@@ -58,6 +63,8 @@
   const errorResponse = ref('')
   const loading = ref(false);
   const tourData = ref<null | ITour>(null)
+  const maxTourists: number = 15
+
 
   const uid = route.params.uid as string;
 

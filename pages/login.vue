@@ -1,9 +1,11 @@
 <template>
-  <v-container class="h-screen flex justify-center items-center">
+  <v-container class="h-screen flex flex-col justify-center items-center">
+							<span class="text-5xl md:text-7xl p-4">WAFINA🇦🇴</span>
+
       <v-card class="pa-4 w-[300px] sm:w-[400px]">
         <v-card-item class="pt-0 pl-2 pb-4">
           <template v-slot:title>
-            <div>Login</div>
+            <div>Admin Login</div>
           </template>
         </v-card-item>
 				<v-form @submit.prevent="handleSignIn">

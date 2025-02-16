@@ -19,20 +19,22 @@
       </div>
     </template> -->
     </v-date-picker>
-    <div class="flex gap-2">
+    <div class="w-full sm:w-auto flex gap-2">
       <v-text-field
-        label="Earliest Date"
+        label="Earliest"
         v-model="earliestDate"
         variant="outlined"
+        width="50%"
         type="date"
         density="comfortable"
         @change="fetchTours"
       />
 
     <v-text-field
-      label="Latest Date"
+      label="Latest"
       v-model="latestDate"
       variant="outlined"
+      width="50%"
       type="date"
       density="comfortable"
       @change="fetchTours"
@@ -49,12 +51,20 @@
       :server-items="fetchTours"
       :items-length="tourData.length"
       @click:row="onRowClick"
-    />
+    >
+      <template #item.customers.length="{ item }: { item: { customers: [] } }">
+				<span><span :class="item.customers.length < 3 ? 'text-primary' : ''">{{item.customers.length}}</span>/{{maxTourists}}</span>
+			</template>
+      <template #item.attractions="{ item }: { item: { attractions: string[] } }">
+				<div class="flex gap-2">
+          <v-chip v-for="attraction in item.attractions">{{ attraction }}</v-chip>
+        </div>
+			</template>
+    </v-data-table-server>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import { VCalendar } from 'vuetify/labs/VCalendar'
 const router = useRouter()
 const config = useRuntimeConfig()
 const url = config.public.baseURL
@@ -64,6 +74,7 @@ const today = new Date().toISOString().split("T")[0];
 const earliestDate = ref(today);
 const latestDate = ref("");
 const { token } = useAuth()
+const maxTourists = 15;
 
 
 
@@ -117,6 +128,7 @@ watch(selectedDate, (newDate) => {
 
 const headers = [
   { title: 'Date', value: 'date' },
+  { title: 'Tourists', value: 'customers.length' },
   { title: 'Time', value: 'time' },
   { title: 'Attractions', value: 'attractions' },
 ];
