@@ -19,7 +19,7 @@
       </div>
     </template> -->
     </v-date-picker>
-    <div class="w-full flex flex-col items-center px-2 pt-2 bg-gray-50 rounded-lg">
+    <div class="w-full flex flex-col items-center px-2 pt-2 shadow-md bg-gray-50 rounded-lg mt-5">
       <h1 class="text-3xl mb-2">Existing Tours</h1>
       <v-text-field          
           label="Search"

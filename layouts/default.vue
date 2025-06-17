@@ -127,11 +127,11 @@ const mainNavItemsPrimary = [
     title: 'TOURS',
     to: '/tours',
   },
-  // {
-  //   icon: 'mdi-play',
-  //   title: 'ATTRACTIONS',
-  //   to: '/attractions',
-  // },
+  {
+    icon: 'mdi-play',
+    title: 'ATTRACTIONS',
+    to: '/attractions',
+  },
   // {
   //   icon: 'mdi-fast-forward',
   //   title: 'FAQ',
